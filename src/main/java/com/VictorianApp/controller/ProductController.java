@@ -35,6 +35,9 @@ public class ProductController {
         return productService.getProductCategories();
     }
 
+    @GetMapping(path = "/product/inventory/{id_produktu}")
+    public Integer getProductInventoryById(@PathVariable Integer id_produktu) { return productService.getProductInventoryById(id_produktu); }
+
     @GetMapping(path = "/product/names")
     public List<String> getProductNames() {
         return productService.getProductNames();
@@ -57,6 +60,12 @@ public class ProductController {
         return ResponseEntity.ok().body(product);
     }
 
+    @PutMapping(path = "/product/inventory")
+    ResponseEntity<Product> updateProductInventory(@RequestBody Product product) {
+        productService.updateProductInventory(product);
+        return ResponseEntity.ok().body(product);
+    }
+
     @DeleteMapping(path = "/product/{id_produktu}")
     ResponseEntity<Product> delete(@PathVariable Integer id_produktu) {
         productService.delete(id_produktu);
@@ -64,3 +73,4 @@ public class ProductController {
     }
 
 }
+

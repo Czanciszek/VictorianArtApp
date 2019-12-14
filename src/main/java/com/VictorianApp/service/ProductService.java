@@ -26,6 +26,8 @@ public class ProductService {
 
     public List<String> getProductCategories() { return this.productDao.getProductCategories(); }
 
+    public Integer getProductInventoryById(int id_produktu) { return this.productDao.getProductInventoryById(id_produktu); }
+
     public List<String> getProductNames() { return this.productDao.getProductNames(); }
 
     public List<String> getProductNamesByCategory(String kategoria) {
@@ -36,6 +38,8 @@ public class ProductService {
     }
 
     public void update(Product product) { this.productDao.update(product);}
+
+    public void updateProductInventory(Product product) { this.productDao.updateProductInventory(product);}
 
     public void delete(int id_produktu) { this.productDao.delete(id_produktu);}
 

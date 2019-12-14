@@ -57,6 +57,11 @@ public class ProductDao implements Dao<Product> {
         return jdbcTemplate.queryForList(sqlSelectCategories, String.class);
     }
 
+    public Integer getProductInventoryById(Integer id_produktu) {
+        final String sqlSelectProductInventoryById = "SELECT stan_magazynu FROM produkt WHERE id_produktu = ?";
+        return jdbcTemplate.queryForObject(sqlSelectProductInventoryById, Integer.class, id_produktu);
+    }
+
     public List<String> getProductNames() {
         final String sqlSelectCategories = "SELECT nazwa FROM produkt GROUP BY nazwa";
         return jdbcTemplate.queryForList(sqlSelectCategories, String.class);
@@ -85,7 +90,7 @@ public class ProductDao implements Dao<Product> {
 
     @Override
     public void update(Product product) {
-        final String sqlUpdateQuery = "UPDATE produkt set nazwa = ?, kategoria = ?, typ = ?," +
+        final String sqlUpdateQuery = "UPDATE produkt SET nazwa = ?, kategoria = ?, typ = ?," +
                 "podatek_vat = ?, ryczalt = ?, stan_magazynu = ?, cena = ? " +
                 "WHERE id_produktu = ?";
 
@@ -99,6 +104,17 @@ public class ProductDao implements Dao<Product> {
         final Float cena = product.getCena();
 
         jdbcTemplate.update(sqlUpdateQuery, nazwa, kategoria, typ, podatek_vat, ryczalt, stan_magazynu, cena, id_produktu);
+    }
+
+    public void updateProductInventory(Product product) {
+
+        final String sqlUpdateProductInventory = "UPDATE produkt SET stan_magazynu = ? " +
+                "WHERE id_produktu = ?";
+
+        final Integer id_produktu = product.getId_produktu();
+        final Integer stan_magazynu = product.getStan_magazynu();
+
+        jdbcTemplate.update(sqlUpdateProductInventory, stan_magazynu, id_produktu);
     }
 
     @Override

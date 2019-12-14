@@ -24,15 +24,21 @@ public class OrderDetailsService {
         return this.orderDetailsImplDao.getOrderDetails(id_zamowienia);
     }
 
-    public List<OrderDetails> getOrderManageData() {
-        return this. orderDetailsImplDao.getOrderManageData();
+    public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {
+        return this. orderDetailsImplDao.getOrderManageProductAtStart(data_typ_przed);
     }
 
-    public void  updateOrderManageSetData(OrderManageData orderManageData) {
-        this.orderDetailsImplDao.updateOrderManageSetData(orderManageData);
+    public List<OrderDetails> getOrderManageProduct(String data_typ_przed, String data_typ_po) {
+        return this. orderDetailsImplDao.getOrderManageProduct(data_typ_przed, data_typ_po);
     }
 
-    public List<OrderDetails> getOrderManageProjects() {
-        return this. orderDetailsImplDao.getOrderManageProjects();
+    public void updateOrderManageSetDataCurrentDate(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetDataCurrentDate(orderManageData);
     }
+
+    public void updateOrderManageSetDataNull(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetDataNull(orderManageData);
+    }
+
+
 }

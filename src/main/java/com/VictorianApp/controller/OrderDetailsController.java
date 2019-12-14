@@ -26,20 +26,27 @@ public class OrderDetailsController {
         return orderDetailsService.getOrderDetails(id_zamowienia);
     }
 
-    @GetMapping(path = "/order/manage/data")
-    public List<OrderDetails> getOrderManageData() {
-        return orderDetailsService.getOrderManageData();
+    @GetMapping(path = "/order/manageProductAtStart/{data_typ_przed}")
+    public List<OrderDetails> getOrderManageProductAtStart(@PathVariable String data_typ_przed) {
+        return orderDetailsService.getOrderManageProductAtStart(data_typ_przed);
     }
 
-    @PutMapping(path = "/order/manage/setData")
-    ResponseEntity<OrderManageData> updateOrderManageSetData(@RequestBody OrderManageData orderManageData) {
-        orderDetailsService.updateOrderManageSetData(orderManageData);
+    @GetMapping(path = "/order/manageProduct/{data_typ_przed}/{data_typ_po}")
+    public List<OrderDetails> getOrderManageProduct(@PathVariable("data_typ_przed") String data_typ_przed,
+                                                    @PathVariable("data_typ_po") String data_typ_po) {
+        return orderDetailsService.getOrderManageProduct(data_typ_przed, data_typ_po);
+    }
+
+    @PutMapping(path = "/order/manage/setDataCurrentDate")
+    ResponseEntity<OrderManageData> updateOrderManageSetDataCurrentDate(@RequestBody OrderManageData orderManageData) {
+        orderDetailsService.updateOrderManageSetDataCurrentDate(orderManageData);
         return ResponseEntity.ok().body(orderManageData);
     }
 
-    @GetMapping(path = "/order/manage/projects")
-    public List<OrderDetails> getOrderManageProjects() {
-        return orderDetailsService.getOrderManageProjects();
+    @PutMapping(path = "/order/manage/setDataNull")
+    ResponseEntity<OrderManageData> updateOrderManageSetDataNull(@RequestBody OrderManageData orderManageData) {
+        orderDetailsService.updateOrderManageSetDataNull(orderManageData);
+        return ResponseEntity.ok().body(orderManageData);
     }
 
 }

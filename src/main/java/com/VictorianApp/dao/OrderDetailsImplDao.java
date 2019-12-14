@@ -60,6 +60,9 @@ public class OrderDetailsImplDao {
         public OrderDetails mapRow(ResultSet result, int numRow) throws SQLException {
             OrderDetails orderDetails = new OrderDetails();
 
+            orderDetails.setId_zamowienia(result.getInt("id_zamowienia"));
+            orderDetails.setId_produktu(result.getInt("id_produktu"));
+
             orderDetails.setNick(result.getString("nick"));
             orderDetails.setData_zamowienia(result.getString("data_zamowienia"));
             orderDetails.setData_wysylki(result.getString("data_wysylki"));
@@ -93,36 +96,46 @@ public class OrderDetailsImplDao {
         return jdbcTemplate.query(sqlSelectByIdQuery, new OrderDetailsRowMapper(), id_zamowienia);
     }
 
-    public List<OrderDetails> getOrderManageData() {
+    public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {
         final String sqlSelectOrderManageData = "SELECT nick, nazwa, data_zamowienia, data_wysylki, " +
-                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania " +
+                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
+                "z.id_zamowienia, z.id_produktu " +
                 "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
-                "WHERE typ > 0 AND data_danych LIKE '' ORDER BY data_zamowienia";
+                "WHERE typ > 0 AND " + data_typ_przed + " IS NULL ORDER BY data_zamowienia";
         return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
     }
 
-    public void updateOrderManageSetData(OrderManageData orderManageData) {
-        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET ? = CURRENT_DATE " +
-                "WHERE id_zamowienia = ? AND id_produktu = ?";
+    public List<OrderDetails> getOrderManageProduct(String data_typ_przed, String data_typ_po) {
+        final String sqlSelectOrderManageData = "SELECT nick, nazwa, data_zamowienia, data_wysylki, " +
+                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
+                "z.id_zamowienia, z.id_produktu " +
+                "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
+                "WHERE typ > 0 AND " + data_typ_przed + " IS NOT NULL AND " + data_typ_po + " IS NULL " +
+                "ORDER BY data_zamowienia";
+        return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
+    }
 
-        final String data_typ = orderManageData.data_typ;
+    public void updateOrderManageSetDataCurrentDate(OrderManageData orderManageData) {
+        final String data_typ = orderManageData.data_typ_przed;
+        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
+                data_typ + " = CURRENT_DATE WHERE id_zamowienia = ? AND id_produktu = ?";
+
         final Integer id_zamowienia = orderManageData.id_zamowienia;
         final Integer id_produktu = orderManageData.id_produktu;
 
-        jdbcTemplate.update(sqlUpdateOrderManageData, data_typ, id_zamowienia, id_produktu);
+        jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
     }
 
-    public void deleteOrderData(Integer id_zamowienia, Integer id_produktu, String datatype) {
-        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET ? = NULL " +
-                "WHERE id_zamowienia = ? AND id_produktu = ?";
-        jdbcTemplate.update(sqlUpdateOrderManageData, datatype, id_zamowienia, id_produktu);
+    public void updateOrderManageSetDataNull(OrderManageData orderManageData) {
+        final String data_typ = orderManageData.data_typ_przed;
+        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
+                data_typ + " = NULL WHERE id_zamowienia = ? AND id_produktu = ?";
+
+        final Integer id_zamowienia = orderManageData.id_zamowienia;
+        final Integer id_produktu = orderManageData.id_produktu;
+
+        jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
     }
 
-    public List<OrderDetails> getOrderManageProjects() {
-        final String sqlSelectOrderManageData = "SELECT nick, nazwa, data_zamowienia, data_wysylki, " +
-                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania " +
-                "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
-                "WHERE typ > 0 AND data_danych NOT LIKE '' AND data_projektu IS NULL ORDER BY data_zamowienia";
-        return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
-    }
+
 }

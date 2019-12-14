@@ -29,12 +29,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/user/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_PRACOWNIK')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_PRACOWNIK', 'ROLE_DRUKARZ')")
     public Optional<User> getUser(@PathVariable Integer id) {
         return userService.get(id);
     }
 
     @GetMapping(path = "/user/name/{login}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_PRACOWNIK', 'ROLE_DRUKARZ')")
     public Optional<User> getUserByLogin(@PathVariable String login) {
         return userService.getUserByLogin(login);
     }

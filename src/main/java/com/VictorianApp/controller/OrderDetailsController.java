@@ -5,12 +5,14 @@ import com.VictorianApp.model.OrderManageData;
 import com.VictorianApp.service.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_DRUKARZ', 'ROLE_PRACOWNIK')")
 public class OrderDetailsController {
 
     @Autowired

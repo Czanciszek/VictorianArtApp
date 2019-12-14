@@ -5,6 +5,8 @@ import com.VictorianApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER')")
 public class UserController {
 
     @Autowired
@@ -26,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/user/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_PRACOWNIK')")
     public Optional<User> getUser(@PathVariable Integer id) {
         return userService.get(id);
     }
@@ -43,7 +47,6 @@ public class UserController {
 
     @PutMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<User> update(@RequestBody User user) {
-        System.out.println("co jest");
         userService.update(user);
         return ResponseEntity.ok().body(user);
     }

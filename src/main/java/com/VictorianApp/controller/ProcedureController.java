@@ -5,6 +5,7 @@ import com.VictorianApp.service.ProcedureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_DRUKARZ', 'ROLE_PRACOWNIK')")
 public class ProcedureController {
 
     @Autowired
@@ -53,6 +55,7 @@ public class ProcedureController {
     }
 
     @DeleteMapping(path = "/procedure/{id_zamowienia}")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER')")
     ResponseEntity<Procedure> delete(@PathVariable Integer id_zamowienia) {
         procedureService.delete(id_zamowienia);
         return ResponseEntity.ok().build();

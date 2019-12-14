@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -29,6 +30,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -63,7 +68,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
         List<User> Users = new ArrayList<>
                 (jdbcTemplate.query(sqlSelectUsers, new UsersRowMapper()));
 
-        for( User user : Users ) {
+        for (User user : Users) {
             String login = user.getLogin();
             String password = user.getHaslo();
             String role = user.getRola().toUpperCase();
@@ -77,23 +82,20 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationSuccessHandler myAuthSuccessHandler(){
-        return new MyUrlAuthSuccessHandler();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.csrf().disable();
+
         http
-                 .cors().and()
-                 .csrf().disable()
-                 .authorizeRequests()
-                 .antMatchers( "/api/**")
-                 .permitAll().anyRequest().authenticated().and().httpBasic();
+                .cors().and()
+                .authorizeRequests()
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().fullyAuthenticated().and().httpBasic();
     }
 
 }

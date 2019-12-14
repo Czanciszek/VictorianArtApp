@@ -5,6 +5,7 @@ import com.VictorianApp.service.SendMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER')")
 public class SendMethodController {
 
     @Autowired

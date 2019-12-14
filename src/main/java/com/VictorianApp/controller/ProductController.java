@@ -5,6 +5,7 @@ import com.VictorianApp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_DRUKARZ', 'ROLE_PRACOWNIK')")
 public class ProductController {
 
     @Autowired
@@ -61,12 +63,14 @@ public class ProductController {
     }
 
     @PutMapping(path = "/product/inventory")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATOR', 'ROLE_SUPERUSER', 'ROLE_DRUKARZ')")
     ResponseEntity<Product> updateProductInventory(@RequestBody Product product) {
         productService.updateProductInventory(product);
         return ResponseEntity.ok().body(product);
     }
 
     @DeleteMapping(path = "/product/{id_produktu}")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER')")
     ResponseEntity<Product> delete(@PathVariable Integer id_produktu) {
         productService.delete(id_produktu);
         return ResponseEntity.ok().build();

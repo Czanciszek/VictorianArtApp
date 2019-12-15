@@ -32,6 +32,11 @@ public class ProductController {
         return productService.get(id_produktu);
     }
 
+    @GetMapping(path = "/product/{category}/{value}")
+    public Optional<Product> getProductByDetail(@PathVariable("category") String category, @PathVariable("value") String value) {
+        return productService.getProductByDetail(category, value);
+    }
+
     @GetMapping(path = "/product/categories")
     public List<String> getProductCategories() {
         return productService.getProductCategories();

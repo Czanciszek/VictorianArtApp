@@ -74,6 +74,7 @@ public class OrderDetailsImplDao {
             orderDetails.setData_wykonania(result.getString("data_wykonania"));
 
             orderDetails.setNazwa(result.getString("nazwa"));
+            orderDetails.setTyp(result.getInt("typ"));
 
             return orderDetails;
         }
@@ -97,7 +98,7 @@ public class OrderDetailsImplDao {
     }
 
     public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {
-        final String sqlSelectOrderManageData = "SELECT nick, nazwa, data_zamowienia, data_wysylki, " +
+        final String sqlSelectOrderManageData = "SELECT nick, nazwa, typ, data_zamowienia, data_wysylki, " +
                 "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
                 "z.id_zamowienia, z.id_produktu " +
                 "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
@@ -106,7 +107,7 @@ public class OrderDetailsImplDao {
     }
 
     public List<OrderDetails> getOrderManageProduct(String data_typ_przed, String data_typ_po) {
-        final String sqlSelectOrderManageData = "SELECT nick, nazwa, data_zamowienia, data_wysylki, " +
+        final String sqlSelectOrderManageData = "SELECT nick, nazwa, typ, data_zamowienia, data_wysylki, " +
                 "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
                 "z.id_zamowienia, z.id_produktu " +
                 "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +

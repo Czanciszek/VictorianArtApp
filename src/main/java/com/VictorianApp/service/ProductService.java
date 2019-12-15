@@ -24,6 +24,10 @@ public class ProductService {
         return this.productDao.get(id_produktu);
     }
 
+    public Optional<Product> getProductByDetail(String category, String value) {
+        return this.productDao.getProductByDetail(category, value);
+    }
+
     public List<String> getProductCategories() { return this.productDao.getProductCategories(); }
 
     public Integer getProductInventoryById(int id_produktu) { return this.productDao.getProductInventoryById(id_produktu); }

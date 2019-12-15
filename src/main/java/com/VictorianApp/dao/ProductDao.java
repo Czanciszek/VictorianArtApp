@@ -48,8 +48,13 @@ public class ProductDao implements Dao<Product> {
     public Optional<Product> get(int id_produktu) {
         final String sqlSelectByIdQuery = "SELECT * FROM produkt WHERE id_produktu = ?";
         return Optional.ofNullable(
-                jdbcTemplate.queryForObject(sqlSelectByIdQuery, new ProductRowMapper(), id_produktu)
-        );
+                jdbcTemplate.queryForObject(sqlSelectByIdQuery, new ProductRowMapper(), id_produktu));
+    }
+
+    public Optional<Product> getProductByDetail(String category, String value) {
+        final String sqlGetProductByDetail = "SELECT * FROM produkt WHERE " + category + " = ?";
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(sqlGetProductByDetail, new ProductRowMapper(), value));
     }
 
     public List<String> getProductCategories() {

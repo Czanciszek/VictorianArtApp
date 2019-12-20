@@ -15,4 +15,5 @@ public class OrderManageData {
     public Integer id_produktu;
     public String data_typ_przed;
     public String data_typ_po;
+    public Integer typ_produktu;
 }

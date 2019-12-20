@@ -38,17 +38,24 @@ public class OrderDetailsController {
                                                     @PathVariable("data_typ_po") String data_typ_po) {
         return orderDetailsService.getOrderManageProduct(data_typ_przed, data_typ_po);
     }
-
+    
     @PutMapping(path = "/order/manage/setDataCurrentDate")
     ResponseEntity<OrderManageData> updateOrderManageSetDataCurrentDate(@RequestBody OrderManageData orderManageData) {
-        orderDetailsService.updateOrderManageSetDataCurrentDate(orderManageData);
+        int typ = orderManageData.getTyp_produktu();
+        if(typ == 2 || orderManageData.data_typ_przed.equals("data_wydrukowania"))
+            orderDetailsService.updateOrderManageSetTypeTwoDataCurrentDate(orderManageData);
+        else if( typ == 1)
+            orderDetailsService.updateOrderManageSetTypeOneDataCurrentDate(orderManageData);
         return ResponseEntity.ok().body(orderManageData);
     }
 
     @PutMapping(path = "/order/manage/setDataNull")
     ResponseEntity<OrderManageData> updateOrderManageSetDataNull(@RequestBody OrderManageData orderManageData) {
-        orderDetailsService.updateOrderManageSetDataNull(orderManageData);
+        int typ = orderManageData.getTyp_produktu();
+        if( typ == 2 || orderManageData.data_typ_przed.equals("data_wydrukowania"))
+            orderDetailsService.updateOrderManageSetTypeTwoDataNull(orderManageData);
+        else if( typ == 1)
+            orderDetailsService.updateOrderManageSetTypeOneDataNull(orderManageData);
         return ResponseEntity.ok().body(orderManageData);
     }
-
 }

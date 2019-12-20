@@ -116,7 +116,30 @@ public class OrderDetailsImplDao {
         return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
     }
 
-    public void updateOrderManageSetDataCurrentDate(OrderManageData orderManageData) {
+    public void updateOrderManageSetTypeOneDataCurrentDate(OrderManageData orderManageData) {
+        final String data_typ = orderManageData.data_typ_przed;
+        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
+                data_typ + " = CURRENT_DATE, data_projektu = '---', data_zatwierdzenia = '---' " +
+                "WHERE id_zamowienia = ? AND id_produktu = ?";
+
+        final Integer id_zamowienia = orderManageData.id_zamowienia;
+        final Integer id_produktu = orderManageData.id_produktu;
+
+        jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
+    }
+
+    public void updateOrderManageSetTypeOneDataNull(OrderManageData orderManageData) {
+        final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
+                "data_zatwierdzenia = NULL, data_projektu = NULL, data_danych = NULL " +
+                "WHERE id_zamowienia = ? AND id_produktu = ?";
+
+        final Integer id_zamowienia = orderManageData.id_zamowienia;
+        final Integer id_produktu = orderManageData.id_produktu;
+
+        jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
+    }
+
+    public void updateOrderManageSetTypeTwoDataCurrentDate(OrderManageData orderManageData) {
         final String data_typ = orderManageData.data_typ_przed;
         final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
                 data_typ + " = CURRENT_DATE WHERE id_zamowienia = ? AND id_produktu = ?";
@@ -127,7 +150,7 @@ public class OrderDetailsImplDao {
         jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
     }
 
-    public void updateOrderManageSetDataNull(OrderManageData orderManageData) {
+    public void updateOrderManageSetTypeTwoDataNull(OrderManageData orderManageData) {
         final String data_typ = orderManageData.data_typ_przed;
         final String sqlUpdateOrderManageData = "UPDATE zamowienie SET " +
                 data_typ + " = NULL WHERE id_zamowienia = ? AND id_produktu = ?";

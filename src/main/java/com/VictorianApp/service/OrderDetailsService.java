@@ -32,12 +32,20 @@ public class OrderDetailsService {
         return this. orderDetailsImplDao.getOrderManageProduct(data_typ_przed, data_typ_po);
     }
 
-    public void updateOrderManageSetDataCurrentDate(OrderManageData orderManageData) {
-        this.orderDetailsImplDao.updateOrderManageSetDataCurrentDate(orderManageData);
+    public void updateOrderManageSetTypeOneDataCurrentDate(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetTypeOneDataCurrentDate(orderManageData);
     }
 
-    public void updateOrderManageSetDataNull(OrderManageData orderManageData) {
-        this.orderDetailsImplDao.updateOrderManageSetDataNull(orderManageData);
+    public void updateOrderManageSetTypeOneDataNull(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetTypeOneDataNull(orderManageData);
+    }
+
+    public void updateOrderManageSetTypeTwoDataCurrentDate(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetTypeTwoDataCurrentDate(orderManageData);
+    }
+
+    public void updateOrderManageSetTypeTwoDataNull(OrderManageData orderManageData) {
+        this.orderDetailsImplDao.updateOrderManageSetTypeTwoDataNull(orderManageData);
     }
 
 

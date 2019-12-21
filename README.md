@@ -3,6 +3,9 @@
 
 ###Aplikacja:
 
+Ogólne:
+* Poprawność wpisywanych danych (praktycznie wszędzie)
+
 Bootstrap:
 * ogólny wygląd aplikacji
 
@@ -16,12 +19,8 @@ Panel zamówień:
 
 Dodać:
 * Panel zamówień gotowych do wysyłki
-* Panel wykończeń (po wydrukowaniu)
 _______________________
 ###Bazy danych:
-
-Tabela procedura:
-* Kolumna na cenę zamówienia
 
 Trigger
 * Obniżanie stanu magazynu po dodaniu produktu

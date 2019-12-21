@@ -32,7 +32,8 @@ public class OrderDetails {
     public String data_zamowienia;
     public String data_wysylki;
     public Boolean gotowosc_zamowienia;
-    public  Boolean oplata;
+    public Boolean oplata;
+    public Float cena_zamowienia;
 
     //Wysyłka
     public Integer id_wysylki;

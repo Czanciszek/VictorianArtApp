@@ -37,6 +37,7 @@ public class ProcedureDao implements Dao<Procedure> {
             procedure.setWysylka(result.getString("wysylka"));
             procedure.setOplata(result.getBoolean("oplata"));
             procedure.setData_wysylki(result.getString("data_wysylki"));
+            procedure.setCena_zamowienia(result.getFloat("cena_zamowienia"));
 
             return procedure;
         }
@@ -117,4 +118,3 @@ public class ProcedureDao implements Dao<Procedure> {
     }
 
 }
-

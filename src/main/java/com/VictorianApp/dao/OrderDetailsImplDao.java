@@ -43,6 +43,7 @@ public class OrderDetailsImplDao {
             orderDetails.setData_wydrukowania(result.getString("data_wydrukowania"));
             orderDetails.setData_wykonania(result.getString("data_wykonania"));
             orderDetails.setGotowosc(result.getBoolean("gotowosc"));
+            orderDetails.setCena_zamowienia(result.getFloat("cena_zamowienia"));
 
             orderDetails.setNazwa(result.getString("nazwa"));
             orderDetails.setKategoria(result.getString("kategoria"));
@@ -98,18 +99,21 @@ public class OrderDetailsImplDao {
     }
 
     public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {
-        final String sqlSelectOrderManageData = "SELECT nick, nazwa, typ, data_zamowienia, data_wysylki, " +
-                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
-                "z.id_zamowienia, z.id_produktu " +
+        final String sqlSelectOrderManageData = "SELECT * " +
                 "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
                 "WHERE typ > 0 AND " + data_typ_przed + " IS NULL ORDER BY data_zamowienia";
         return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
     }
 
+    public List<OrderDetails> getOrderManageProductAtEnd() {
+        final String sqlSelectOrderManageData = "SELECT * " +
+                "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
+                "WHERE typ > 0 AND data_wykonania IS NOT NULL AND data_wysylki IS NULL ORDER BY data_zamowienia";
+        return jdbcTemplate.query(sqlSelectOrderManageData, new OrderDetailsManageRowMapper());
+    }
+
     public List<OrderDetails> getOrderManageProduct(String data_typ_przed, String data_typ_po) {
-        final String sqlSelectOrderManageData = "SELECT nick, nazwa, typ, data_zamowienia, data_wysylki, " +
-                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, " +
-                "z.id_zamowienia, z.id_produktu " +
+        final String sqlSelectOrderManageData = "SELECT * " +
                 "FROM procedura pr JOIN zamowienie z USING (id_zamowienia) JOIN produkt USING (id_produktu) " +
                 "WHERE typ > 0 AND " + data_typ_przed + " IS NOT NULL AND " + data_typ_po + " IS NULL " +
                 "ORDER BY data_zamowienia";
@@ -160,6 +164,4 @@ public class OrderDetailsImplDao {
 
         jdbcTemplate.update(sqlUpdateOrderManageData, id_zamowienia, id_produktu);
     }
-
-
 }

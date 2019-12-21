@@ -32,6 +32,10 @@ public class OrderDetailsService {
         return this. orderDetailsImplDao.getOrderManageProduct(data_typ_przed, data_typ_po);
     }
 
+    public List<OrderDetails> getOrderManageProductAtEnd() {
+        return this.orderDetailsImplDao.getOrderManageProductAtEnd();
+    }
+
     public void updateOrderManageSetTypeOneDataCurrentDate(OrderManageData orderManageData) {
         this.orderDetailsImplDao.updateOrderManageSetTypeOneDataCurrentDate(orderManageData);
     }

@@ -33,6 +33,11 @@ public class OrderDetailsController {
         return orderDetailsService.getOrderManageProductAtStart(data_typ_przed);
     }
 
+    @GetMapping(path = "/order/manageProductAtEnd")
+    public List<OrderDetails> getOrderManageProductAtEnd() {
+        return orderDetailsService.getOrderManageProductAtEnd();
+    }
+
     @GetMapping(path = "/order/manageProduct/{data_typ_przed}/{data_typ_po}")
     public List<OrderDetails> getOrderManageProduct(@PathVariable("data_typ_przed") String data_typ_przed,
                                                     @PathVariable("data_typ_po") String data_typ_po) {
@@ -52,7 +57,8 @@ public class OrderDetailsController {
     @PutMapping(path = "/order/manage/setDataNull")
     ResponseEntity<OrderManageData> updateOrderManageSetDataNull(@RequestBody OrderManageData orderManageData) {
         int typ = orderManageData.getTyp_produktu();
-        if( typ == 2 || orderManageData.data_typ_przed.equals("data_wydrukowania"))
+        String date = orderManageData.data_typ_przed;
+        if( typ == 2 || date.equals("data_wydrukowania") || date.equals("data_wykonania") )
             orderDetailsService.updateOrderManageSetTypeTwoDataNull(orderManageData);
         else if( typ == 1)
             orderDetailsService.updateOrderManageSetTypeOneDataNull(orderManageData);

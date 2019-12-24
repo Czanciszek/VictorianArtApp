@@ -46,7 +46,7 @@ public class ProcedureDao implements Dao<Procedure> {
     @Override
     public List<Procedure> getAll() {
         final String sqlSelectQuery = "SELECT * FROM procedura p JOIN wysylka w ON p.id_wysylki = w.id_wysylki " +
-                "ORDER BY data_zamowienia, id_zamowienia LIMIT 25";
+                "ORDER BY data_zamowienia, id_zamowienia";
         return jdbcTemplate.query(sqlSelectQuery, new ProcedureRowMapper());
     }
 

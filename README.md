@@ -7,6 +7,7 @@ Ogólne:
 * Zastanowić się nad problemem zbyt dużej ilości danych w filtrach
 * Ustawić proxy na frontcie, uruchamianie z 0.0.0.0
 * ogólny wygląd aplikacji (bootstrap)
+* Problem "controls" w procedure-new (242, 250, 253)
 
 Zamówienia:
 * Filtry zamówień (wysłane, nieskończone, zakres dat itd.)

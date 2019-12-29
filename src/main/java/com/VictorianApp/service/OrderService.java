@@ -43,5 +43,7 @@ public class OrderService {
 
     public void update(Order order) { this.orderDao.update(order);}
 
+    public void updateProductOrder(Order order) { this.orderDao.updateProductOrder(order); }
+
     public void delete(int id) { this.orderDao.delete(id);}
 }

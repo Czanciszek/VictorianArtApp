@@ -30,5 +30,6 @@ public class Procedure {
     public Boolean oplata;
     public String data_wysylki;
     public Float cena_zamowienia;
+    public Boolean zamowienie_express;
 
 }

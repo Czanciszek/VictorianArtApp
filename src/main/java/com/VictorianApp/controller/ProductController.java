@@ -75,7 +75,7 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/product/{id_produktu}")
-    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER', 'ROLE_ADMINISTRATOR')")
     ResponseEntity<Product> delete(@PathVariable Integer id_produktu) {
         productService.delete(id_produktu);
         return ResponseEntity.ok().build();

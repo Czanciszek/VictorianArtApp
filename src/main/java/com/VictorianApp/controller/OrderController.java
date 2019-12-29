@@ -60,8 +60,14 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
+    @PutMapping(path = "/product/updateProductOrder")
+    ResponseEntity<Order> updateProductOrder(@RequestBody Order order) {
+        orderService.updateProductOrder(order);
+        return ResponseEntity.ok().body(order);
+    }
+
     @DeleteMapping(path = "/order/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER', 'ROLE_ADMINISTRATOR')")
     ResponseEntity<Order> delete(@PathVariable Integer id) {
         orderService.delete(id);
         return ResponseEntity.ok().build();

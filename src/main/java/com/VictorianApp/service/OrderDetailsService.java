@@ -24,6 +24,10 @@ public class OrderDetailsService {
         return this.orderDetailsImplDao.getOrderDetails(id_zamowienia);
     }
 
+    public List<OrderDetails> getMissingProducts() {
+        return this.orderDetailsImplDao.getMissingProducts();
+    }
+
     public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {
         return this. orderDetailsImplDao.getOrderManageProductAtStart(data_typ_przed);
     }

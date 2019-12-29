@@ -44,10 +44,13 @@ public class OrderDetailsImplDao {
             orderDetails.setData_wykonania(result.getString("data_wykonania"));
             orderDetails.setGotowosc(result.getBoolean("gotowosc"));
             orderDetails.setCena_zamowienia(result.getFloat("cena_zamowienia"));
+            orderDetails.setPersonalizacja(result.getBoolean("personalizacja"));
 
             orderDetails.setNazwa(result.getString("nazwa"));
             orderDetails.setKategoria(result.getString("kategoria"));
             orderDetails.setCena(result.getFloat("cena"));
+            orderDetails.setTyp(result.getInt("typ"));
+            orderDetails.setStan_magazynu(result.getInt("stan_magazynu"));
 
             orderDetails.setId_wysylki(result.getInt("id_wysylki"));
             orderDetails.setWysylka(result.getString("wysylka"));
@@ -96,6 +99,17 @@ public class OrderDetailsImplDao {
                 "JOIN wysylka w ON pr.id_wysylki=w.id_wysylki " +
                 "WHERE z.id_zamowienia = ?";
         return jdbcTemplate.query(sqlSelectByIdQuery, new OrderDetailsRowMapper(), id_zamowienia);
+    }
+
+    public List<OrderDetails> getMissingProducts() {
+        final String sqlSelectMissingProducts = "SELECT * FROM zamowienie z " +
+                "JOIN produkt p ON z.id_produktu=p.id_produktu " +
+                "JOIN procedura pr ON z.id_zamowienia=pr.id_zamowienia " +
+                "JOIN wysylka w ON pr.id_wysylki=w.id_wysylki " +
+                "WHERE typ = 0 AND gotowosc = FALSE " +
+                "ORDER BY data_zamowienia";
+
+        return jdbcTemplate.query(sqlSelectMissingProducts, new OrderDetailsRowMapper());
     }
 
     public List<OrderDetails> getOrderManageProductAtStart(String data_typ_przed) {

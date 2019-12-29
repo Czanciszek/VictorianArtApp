@@ -42,6 +42,13 @@ public class ProcedureController {
         return procedureService.getLatestProcedureId();
     }
 
+    @GetMapping(path ="/getProceduresReadyToSend")
+    public List<Procedure> getProceduresReadyToSend() { return procedureService.getProceduresReadyToSend(); }
+
+    @GetMapping(path ="/getProceduresAlreadySent")
+    public List<Procedure> getProceduresAlreadySent() { return procedureService.getProceduresAlreadySent(); }
+
+
     @PostMapping(path = "/procedure", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Procedure> save(@Valid @RequestBody Procedure procedure) throws URISyntaxException {
         procedureService.save(procedure);
@@ -54,8 +61,14 @@ public class ProcedureController {
         return ResponseEntity.ok().body(procedure);
     }
 
+    @PutMapping(path = "/procedure/send")
+    ResponseEntity<Procedure> updateSendDate(@RequestBody Procedure procedure) {
+        procedureService.updateSendDate(procedure);
+        return ResponseEntity.ok().body(procedure);
+    }
+
     @DeleteMapping(path = "/procedure/{id_zamowienia}")
-    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPERUSER', 'ROLE_ADMINISTRATOR')")
     ResponseEntity<Procedure> delete(@PathVariable Integer id_zamowienia) {
         procedureService.delete(id_zamowienia);
         return ResponseEntity.ok().build();

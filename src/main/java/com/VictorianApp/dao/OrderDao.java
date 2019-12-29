@@ -33,6 +33,7 @@ public class OrderDao implements Dao<Order> {
             order.setData_wydrukowania(result.getString("data_wydrukowania"));
             order.setData_wykonania(result.getString("data_wykonania"));
             order.setGotowosc(result.getBoolean("gotowosc"));
+            order.setPersonalizacja(result.getBoolean("personalizacja"));
 
             return order;
         }
@@ -90,8 +91,8 @@ public class OrderDao implements Dao<Order> {
     @Override
     public void save(Order order) {
         final String sqlInsertQuery = "INSERT INTO zamowienie (id_zamowienia, id_produktu, ilosc," +
-                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc) " +
-                "VALUES (?,?,?,?,?,?,?,?,?)";
+                "data_danych, data_projektu, data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc, personalizacja) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         final Integer id_zamowienia = order.getId_zamowienia();
         final Integer id_produktu = order.getId_produktu();
@@ -102,15 +103,16 @@ public class OrderDao implements Dao<Order> {
         final String data_wydrukowania = order.getData_wydrukowania();
         final String data_wykonania = order.getData_wykonania();
         final Boolean gotowosc = order.getGotowosc();
+        final Boolean personalizacja = order.getPersonalizacja();
 
         jdbcTemplate.update(sqlInsertQuery, id_zamowienia, id_produktu, ilosc, data_danych, data_projektu,
-                data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc);
+                data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc, personalizacja);
     }
 
     @Override
     public void update(Order order) {
         final String sqlUpdateQuery = "UPDATE zamowienie set id_produktu = ?, ilosc = ?, data_danych = ?, data_projektu = ?, " +
-                "data_ zatwierdzenia = ?, data_wydrukowania = ?, data_wykonania = ?, gotowosc = ? WHERE id_zamowienia = ?";
+                "data_zatwierdzenia = ?, data_wydrukowania = ?, data_wykonania = ?, gotowosc = ?, personalizacja = ? WHERE id_zamowienia = ?";
 
         final Integer id_zamowienia = order.getId_zamowienia();
         final Integer id_produktu = order.getId_produktu();
@@ -121,9 +123,20 @@ public class OrderDao implements Dao<Order> {
         final String data_wydrukowania = order.getData_wydrukowania();
         final String data_wykonania = order.getData_wykonania();
         final Boolean gotowosc = order.getGotowosc();
+        final Boolean personalizacja = order.getPersonalizacja();
 
         jdbcTemplate.update(sqlUpdateQuery, id_produktu, ilosc, data_danych, data_projektu,
-                data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc, id_zamowienia);
+                data_zatwierdzenia, data_wydrukowania, data_wykonania, gotowosc, personalizacja, id_zamowienia);
+    }
+
+    public void updateProductOrder(Order order) {
+        final String sqlUpdateProductOrder = "UPDATE zamowienie SET data_wykonania = CURRENT_DATE " +
+                "WHERE id_zamowienia = ? AND id_produktu = ?";
+
+        final Integer id_zamowienia = order.getId_zamowienia();
+        final Integer id_produktu = order.getId_produktu();
+
+        jdbcTemplate.update(sqlUpdateProductOrder, id_zamowienia, id_produktu);
     }
 
     @Override

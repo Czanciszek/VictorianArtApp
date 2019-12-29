@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +37,7 @@ public class ProcedureDao implements Dao<Procedure> {
             procedure.setOplata(result.getBoolean("oplata"));
             procedure.setData_wysylki(result.getString("data_wysylki"));
             procedure.setCena_zamowienia(result.getFloat("cena_zamowienia"));
+            procedure.setZamowienie_express(result.getBoolean("zamowienie_express"));
 
             return procedure;
         }
@@ -46,7 +46,7 @@ public class ProcedureDao implements Dao<Procedure> {
     @Override
     public List<Procedure> getAll() {
         final String sqlSelectQuery = "SELECT * FROM procedura p JOIN wysylka w ON p.id_wysylki = w.id_wysylki " +
-                "ORDER BY data_zamowienia, id_zamowienia";
+                "ORDER BY zamowienie_express DESC, data_zamowienia ASC";
         return jdbcTemplate.query(sqlSelectQuery, new ProcedureRowMapper());
     }
 
@@ -70,11 +70,27 @@ public class ProcedureDao implements Dao<Procedure> {
                 jdbcTemplate.queryForObject(sqlSelectLatestProcedureId, Integer.class));
     }
 
+    public List<Procedure> getProceduresReadyToSend() {
+        final String sqlgetProceduresReadyToSend = "SELECT * FROM procedura p " +
+                "JOIN wysylka w USING (id_wysylki) " +
+                "WHERE gotowosc_zamowienia = TRUE AND data_wysylki IS NULL";
+
+        return jdbcTemplate.query(sqlgetProceduresReadyToSend, new ProcedureRowMapper());
+    }
+
+    public List<Procedure> getProceduresAlreadySent() {
+        final String sqlgetProceduresAlreadySent = "SELECT * FROM procedura p " +
+                "JOIN wysylka w USING (id_wysylki) " +
+                "WHERE gotowosc_zamowienia = TRUE AND data_wysylki = CAST(CURRENT_DATE AS VARCHAR)";
+
+        return jdbcTemplate.query(sqlgetProceduresAlreadySent, new ProcedureRowMapper());
+    }
+
     @Override
     public void save(Procedure procedure) {
         final String sqlInsertQuery = "INSERT INTO procedura (nick, adres, email, telefon, data_zamowienia," +
-                "gotowosc_zamowienia, id_wysylki, oplata, data_wysylki) " +
-                "VALUES (?,?,?,?,?,?,?,?,?)";
+                "gotowosc_zamowienia, id_wysylki, oplata, data_wysylki, zamowienie_express) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         final String nick = procedure.getNick();
         final String adres = procedure.getAdres();
@@ -85,15 +101,16 @@ public class ProcedureDao implements Dao<Procedure> {
         final Integer id_wysylki = procedure.getId_wysylki();
         final Boolean oplata = procedure.getOplata();
         final String data_wysylki = procedure.getData_wysylki();
+        final Boolean zamowienie_express = procedure.getZamowienie_express();
 
         jdbcTemplate.update(sqlInsertQuery, nick, adres, email, telefon, data_zamowienia,
-                gotowosc_zamowienia, id_wysylki, oplata, data_wysylki);
+                gotowosc_zamowienia, id_wysylki, oplata, data_wysylki, zamowienie_express);
     }
 
     @Override
     public void update(Procedure procedure) {
         final String sqlUpdateQuery = "UPDATE procedura set nick = ?, adres = ?, email = ?, telefon = ?," +
-                "data_zamowienia = ?, gotowosc_zamowienia = ?, id_wysylki = ?, oplata = ?, data_wysylki = ? " +
+                "data_zamowienia = ?, gotowosc_zamowienia = ?, id_wysylki = ?, oplata = ?, data_wysylki = ?, zamowienie_express = ?" +
                 "WHERE id_zamowienia = ?";
 
         final Integer id_zamowienia = procedure.getId_zamowienia();
@@ -106,9 +123,19 @@ public class ProcedureDao implements Dao<Procedure> {
         final Integer id_wysylki = procedure.getId_wysylki();
         final Boolean oplata = procedure.getOplata();
         final String data_wysylki = procedure.getData_wysylki();
+        final Boolean zamowienie_express = procedure.getZamowienie_express();
 
         jdbcTemplate.update(sqlUpdateQuery, nick, adres, email, telefon, data_zamowienia,
-                gotowosc_zamowienia, id_wysylki, oplata, data_wysylki, id_zamowienia);
+                gotowosc_zamowienia, id_wysylki, oplata, data_wysylki, zamowienie_express, id_zamowienia);
+    }
+
+    public void updateSendDate(Procedure procedure) {
+        final String sqlUpdateQuery = "UPDATE procedura SET data_wysylki = ? " +
+                "WHERE id_zamowienia = ?";
+
+        final Integer id_zamowienia = procedure.getId_zamowienia();
+        final String data_wysylki = procedure.getData_wysylki();
+        jdbcTemplate.update(sqlUpdateQuery, data_wysylki, id_zamowienia);
     }
 
     @Override

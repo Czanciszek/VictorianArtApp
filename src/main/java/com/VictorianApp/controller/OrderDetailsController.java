@@ -28,6 +28,11 @@ public class OrderDetailsController {
         return orderDetailsService.getOrderDetails(id_zamowienia);
     }
 
+    @GetMapping(path = "/product/missing-products")
+    public List<OrderDetails> getMissingProducts() {
+        return orderDetailsService.getMissingProducts();
+    }
+
     @GetMapping(path = "/order/manageProductAtStart/{data_typ_przed}")
     public List<OrderDetails> getOrderManageProductAtStart(@PathVariable String data_typ_przed) {
         return orderDetailsService.getOrderManageProductAtStart(data_typ_przed);

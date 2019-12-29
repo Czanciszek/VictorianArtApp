@@ -28,11 +28,21 @@ public class ProcedureService {
 
     public Optional<Integer> getLatestProcedureId() { return this.procedureDao.getLatestProcedureId(); }
 
+    public List<Procedure> getProceduresReadyToSend() {
+        return this.procedureDao.getProceduresReadyToSend();
+    }
+
+    public List<Procedure> getProceduresAlreadySent() {
+        return this.procedureDao.getProceduresAlreadySent();
+    }
+
     public void save( Procedure procedure) {
         this.procedureDao.save(procedure);
     }
 
     public void update(Procedure procedure) { this.procedureDao.update(procedure);}
+
+    public void updateSendDate(Procedure procedure) { this.procedureDao.updateSendDate(procedure);}
 
     public void delete(int id) { this.procedureDao.delete(id);}
 }

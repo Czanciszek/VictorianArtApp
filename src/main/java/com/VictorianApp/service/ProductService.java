@@ -43,7 +43,7 @@ public class ProductService {
 
     public void update(Product product) { this.productDao.update(product);}
 
-    public void updateProductInventory(Product product) { this.productDao.updateProductInventory(product);}
+    public void updateProductInventory(Product product) { this.productDao.updateProductInventory(product); }
 
     public void delete(int id_produktu) { this.productDao.delete(id_produktu);}
 

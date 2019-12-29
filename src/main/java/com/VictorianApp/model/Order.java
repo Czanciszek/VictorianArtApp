@@ -16,6 +16,7 @@ public class Order {
     public String data_wydrukowania;
     public String data_wykonania;
     public Boolean gotowosc;
+    public Boolean personalizacja;
 
     //Szczegóły
     public Integer ilosc_produktow;

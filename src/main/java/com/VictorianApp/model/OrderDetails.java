@@ -17,12 +17,14 @@ public class OrderDetails {
     public String data_wydrukowania;
     public String data_wykonania;
     public Boolean gotowosc;
+    public Boolean personalizacja;
 
     //Produkt
     public String nazwa;
     public String kategoria;
     public Float cena;
     public Integer typ;
+    public Integer stan_magazynu;
 
     //Procedura
     public String nick;

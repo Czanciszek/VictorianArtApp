@@ -7,20 +7,21 @@ Ogólne:
 * Zastanowić się nad problemem zbyt dużej ilości danych w filtrach
 * Ustawić proxy na frontcie, uruchamianie z 0.0.0.0
 * ogólny wygląd aplikacji (bootstrap)
-* Problem "controls" w procedure-new (242, 250, 253)
 
 Zamówienia:
-* Filtry zamówień (wysłane, nieskończone, zakres dat itd.)
-* Edycja zamówień (dopóki niewysłane)
-* Usuwanie zamówień
+* Napis EXPRESS tam gdzie jest
+* Filtry zamówień (wysłane, wszystkie, nieskończone)
+* (ewentualnie) Dodać kopiowanie adresu do schowka
+* Edycja zamówień (przed zatwierdzeniem usunąć poprzednie)
+* (ewentualnie) wyświetlanie "dane do projektu"
 
 Panel etapu zamówień:
 * Filtry produktów (po nicku, typie)
 * Info: Typ1 (z imieniem i datą), Typ2 (projekt)
+* Produkty z projektem, czy mają personalizację
 
-Dodać:
-* Panel zamówień gotowych do wysyłki
-* Panel z listą brakujących produktów do zamówienia
+Panel wysyłki:
+* Poprawić wyświetlane informacje
 _______________________
 ###Bazy danych:
 

@@ -76,6 +76,7 @@ public class OrderDetailsImplDao {
             orderDetails.setData_zatwierdzenia(result.getString("data_zatwierdzenia"));
             orderDetails.setData_wydrukowania(result.getString("data_wydrukowania"));
             orderDetails.setData_wykonania(result.getString("data_wykonania"));
+            orderDetails.setPersonalizacja(result.getBoolean("personalizacja"));
 
             orderDetails.setNazwa(result.getString("nazwa"));
             orderDetails.setTyp(result.getInt("typ"));
